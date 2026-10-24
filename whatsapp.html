@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تواصل معنا على واتساب</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+:root{
+  --ink:#0d2b2e;
+  --ink-2:#14393d;
+  --paper:#eef5f2;
+  --muted:#9fbdb8;
+  --wa:#25d366;
+  --wa-dark:#1da851;
+}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{
+  font-family:"Cairo",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+  background:var(--ink);
+  color:var(--paper);
+  display:grid;
+  place-items:center;
+  padding:24px;
+}
+.wrap{
+  width:min(100%,420px);
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+}
+h1{font-size:clamp(1.8rem,6vw,2.4rem);font-weight:800;line-height:1.3}
+.lead{color:var(--muted);line-height:1.8;max-width:34ch}
+
+
+.btn{
+  margin-top:8px;
+  display:inline-block;
+  background:var(--wa);
+  color:#06210f;
+  font-weight:800;
+  font-size:1.1rem;
+  padding:14px 36px;
+  border-radius:999px;
+  text-decoration:none;
+  transition:background .15s, transform .15s;
+}
+.btn:hover{background:var(--wa-dark)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible,.phone a:focus-visible{outline:3px solid var(--paper);outline-offset:4px}
+
+.phone{color:var(--muted);font-size:.95rem}
+.phone a{color:var(--paper);font-weight:600;text-decoration:none;border-bottom:1px solid var(--muted)}
+
+</style>
+</head>
+<body>
+  <main class="wrap">
+
+    <h1>جاري فتح واتساب…</h1>
+    <p class="lead" id="lead">هتتحول لمحادثة جاهزة، اضغط إرسال بس.</p>
+
+    <a class="btn" id="waBtn" href="#">افتح واتساب الآن</a>
+
+    <p class="phone">أو كلمنا على <a id="phoneLink" href="#" dir="ltr">+20 000 000 0000</a></p>
+  </main>
+  <script>
+// ===== الإعدادات: عدّل هنا بس =====
+const CONFIG = {
+  // رقمك بالصيغة الدولية بدون + أو 00  (مصر = 20 وبعدها الرقم من غير الصفر الأول)
+  // مثال: 01012345678  →  201012345678
+  phone: "201148377058",
+
+  // الرسالة اللي هتظهر جاهزة عند العميل
+  message: "السلام عليكم، حابب أستفسر عن خدماتكم."
+};
+// ==================================
+
+const waUrl = `https://wa.me/${CONFIG.phone}?text=${encodeURIComponent(CONFIG.message)}`;
+
+const btn = document.getElementById("waBtn");
+const phoneLink = document.getElementById("phoneLink");
+const leadEl = document.getElementById("lead");
+
+btn.href = waUrl;
+phoneLink.href = `tel:+${CONFIG.phone}`;
+phoneLink.textContent = "+" + CONFIG.phone.replace(/(\d{2})(\d{3})(\d{3})(\d+)/, "$1 $2 $3 $4");
+
+// تحويل فوري أول ما الصفحة تفتح
+window.location.replace(waUrl);
+
+// لو واتساب ماتفتحش، الزرار يفضل متاح
+setTimeout(() => {
+  leadEl.textContent = "لو واتساب ماتفتحش، اضغط على الزر تحت.";
+}, 1500);
+</script>
+</body>
+</html>
