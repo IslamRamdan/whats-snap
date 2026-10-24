@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تواصل معنا على واتساب</title>
+
+  <!-- Snap Pixel Code -->
+  <script type="text/javascript">
+  (function(e,t,n){if(e.snaptr)return;var a=e.snaptr=function()
+  {a.handleRequest?a.handleRequest.apply(a,arguments):a.queue.push(arguments)};
+  a.queue=[];var s='script';r=t.createElement(s);r.async=!0;
+  r.src=n;var u=t.getElementsByTagName(s)[0];
+  u.parentNode.insertBefore(r,u);})(window,document,
+  'https://sc-static.net/scevent.min.js');
+
+  snaptr('init', '73737cb1-40d9-4daa-87b0-772b76e7d52e');
+  snaptr('track', 'PAGE_VIEW');
+  </script>
+  <!-- End Snap Pixel Code -->
+
+  <!-- ضيف أي بيكسل تاني هنا (Meta / TikTok / GA4) -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+:root{
+  --ink:#0d2b2e;
+  --ink-2:#14393d;
+  --paper:#eef5f2;
+  --muted:#9fbdb8;
+  --wa:#25d366;
+  --wa-dark:#1da851;
+}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{
+  font-family:"Cairo",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+  background:var(--ink);
+  color:var(--paper);
+  display:grid;
+  place-items:center;
+  padding:24px;
+}
+.wrap{
+  width:min(100%,420px);
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+}
+h1{font-size:clamp(1.8rem,6vw,2.4rem);font-weight:800;line-height:1.3}
+.lead{color:var(--muted);line-height:1.8;max-width:34ch}
+
+.btn{
+  margin-top:8px;
+  display:inline-block;
+  background:var(--wa);
+  color:#06210f;
+  font-weight:800;
+  font-size:1.1rem;
+  padding:14px 36px;
+  border-radius:999px;
+  text-decoration:none;
+  transition:background .15s, transform .15s;
+}
+.btn:hover{background:var(--wa-dark)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible,.phone a:focus-visible{outline:3px solid var(--paper);outline-offset:4px}
+
+.phone{color:var(--muted);font-size:.95rem}
+.phone a{color:var(--paper);font-weight:600;text-decoration:none;border-bottom:1px solid var(--muted)}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>جاري فتح واتساب…</h1>
+    <p class="lead" id="lead">هتتحول لمحادثة جاهزة، اضغط إرسال بس.</p>
+
+    <a class="btn" id="waBtn" href="#">افتح واتساب الآن</a>
+
+    <p class="phone">أو كلمنا على <a id="phoneLink" href="#" dir="ltr">+20 000 000 0000</a></p>
+  </main>
+
+  <script>
+// ===== الإعدادات: عدّل هنا بس =====
+const CONFIG = {
+  // رقمك بالصيغة الدولية بدون + أو 00 (مصر = 20 وبعدها الرقم من غير الصفر الأول)
+  phone: "201148377058",
+
+  // الرسالة اللي هتظهر جاهزة عند العميل
+  message: "السلام عليكم، حابب أستفسر عن خدماتكم.",
+
+  // مهلة صغيرة (مللي ثانية) عشان البيكسل يلحق يبعت الحدث قبل التحويل
+  redirectDelay: 600
+};
+// ==================================
+
+const waUrl = `https://wa.me/${CONFIG.phone}?text=${encodeURIComponent(CONFIG.message)}`;
+
+const btn = document.getElementById("waBtn");
+const phoneLink = document.getElementById("phoneLink");
+const leadEl = document.getElementById("lead");
+
+btn.href = waUrl;
+phoneLink.href = `tel:+${CONFIG.phone}`;
+phoneLink.textContent = "+" + CONFIG.phone.replace(/(\d{2})(\d{3})(\d{3})(\d+)/, "$1 $2 $3 $4");
+
+// تتبع آمن: لو البيكسل اتحجب (AdBlock) الصفحة تكمل عادي
+function track(event, data){
+  try { if (window.snaptr) snaptr('track', event, data || {}); } catch(e){}
+}
+
+let redirected = false;
+function goWhatsApp(source){
+  if (redirected) return;
+  redirected = true;
+  // حدث مخصص لضغطة/تحويل واتساب (اربطه بهدف في Snap Ads Manager)
+  track('CUSTOM_EVENT_1', { description: 'whatsapp_' + source });
+  setTimeout(() => window.location.replace(waUrl), CONFIG.redirectDelay);
+}
+
+// تحويل تلقائي بعد تحميل الصفحة وإرسال PAGE_VIEW
+goWhatsApp('auto');
+
+// الزر: لو التحويل التلقائي ماشتغلش
+btn.addEventListener("click", (e) => {
+  e.preventDefault();
+  redirected = false;
+  goWhatsApp('click');
+});
+
+// لو واتساب ماتفتحش
+setTimeout(() => {
+  leadEl.textContent = "لو واتساب ماتفتحش، اضغط على الزر تحت.";
+}, 2000);
+  </script>
+</body>
+</html>
